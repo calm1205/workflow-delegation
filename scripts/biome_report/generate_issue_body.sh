@@ -1,13 +1,13 @@
 #!/usr/bin/env zsh
 
-set -u
+set -eu
 
 # tmp/biome.jsonのdiagnostics.pathとdiagnostics.messageを元にissue本文を生成
 
-# e.g.
+# Example of output markdown file
 # ```md
-# # Biome Lint Report
-# - {diagnostics.path}: {diagnostics.message}
+# ## Lint Errors
+# - src/index.ts: This variable unused is unused.
 # ```
 
 JSON_PATH="tmp/biome.json"

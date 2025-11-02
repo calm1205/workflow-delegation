@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-set -u
+set -eu
 BIOME_JSON="tmp/biome.json"
 
 # Biome実行（終了コードに関わらず続行してJSON解析を試みる）
