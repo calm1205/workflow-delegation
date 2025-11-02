@@ -1,0 +1,36 @@
+name: Run biome
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Run biome
+        run: bash scripts/biome_report/index.sh
+
+
+      - name: Read report markdown file
+        if: ${{ hashFiles('tmp/biome_report.md') != '' }}
+        run: |
+          BODY=$(cat tmp/biome_report.md)
+          echo "body<<EOF" >> $GITHUB_ENV
+          echo "$BODY" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create Issue
+        if: ${{ hashFiles('tmp/biome_report.md') != '' }}
+        uses: peter-evans/create-issue@v5
+        with:
+          title: "Biome Lint Report"
+          body: ${{ env.body }}
+
+
