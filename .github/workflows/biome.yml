@@ -14,23 +14,19 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
       - name: Run biome
         run: bash scripts/biome_report/index.sh
 
-
-      - name: Read report markdown file
-        if: ${{ hashFiles('tmp/biome_report.md') != '' }}
-        run: |
-          BODY=$(cat tmp/biome_report.md)
-          echo "body<<EOF" >> $GITHUB_ENV
-          echo "$BODY" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
       - name: Create Issue
         if: ${{ hashFiles('tmp/biome_report.md') != '' }}
-        uses: peter-evans/create-issue@v5
+        uses: peter-evans/create-issue-from-file@v5
         with:
           title: "Biome Lint Report"
-          body: ${{ env.body }}
+          content-filepath: tmp/biome_report.md
 
 
