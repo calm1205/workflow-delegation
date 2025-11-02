@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 
 set -eu
 BIOME_JSON="tmp/biome.json"
